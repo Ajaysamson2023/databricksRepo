@@ -3,8 +3,7 @@ from delta.tables import *
 
 DeltaTable.create(spark)\
     .tableName("delta_table_1")\
-        .addColumn("emp_id","INT")\
-            .addColumn("emp_name","STRING")\
+        .addColumn("emp_id","INT","emp_name","STRING")\
                 .addColumn("gender","STRING")\
                     .addColumn("Dept","STRING")\
                         .property("description","Table created for practice purpose")\
@@ -56,6 +55,21 @@ display(spark.read.format("delta").load("/FileStore/shared_uploads/ajay.k@diggib
 
 # MAGIC %sql
 # MAGIC delete from delta_table_1  where emp_id=009
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from delta_table_1
+
+# COMMAND ----------
+
+# MAGIC %fs
+# MAGIC ls /FileStore/shared_uploads/ajay.k@diggibyte.com/delta_table/_delta_log/
+
+# COMMAND ----------
+
+df=spark.read.format('parquet').load('/FileStore/shared_uploads/ajay.k@diggibyte.com/delta_table/_delta_log/00000000000000000010.checkpoint.parquet')
+display(df)
 
 # COMMAND ----------
 
